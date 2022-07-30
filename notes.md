@@ -9,3 +9,5 @@
 step 1: download audio(s) from specific genere/mood (sad, motivational, relax, jazz, etc)
 step 2: make thumbnail, title, description, keywords
 step 3: convert metadata in different languages
+
+#https://zulko.github.io/moviepy/_modules/moviepy/video/compositing/CompositeVideoClip.html#:~:text=%5Bdocs%5Dclass%20CompositeVideoClip(VideoClip,width)%20of%20the%20final%20clip.
