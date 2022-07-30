@@ -1,12 +1,14 @@
 # NOTE this one is specifically for playlist compilations
 import random
 import os
-from tkinter import CENTER, Image
+from tkinter import CENTER
 from moviepy.editor import *
 import datetime
 
-# TODO video type option generation (loop vs still image)
-# TODO ambient sound options
+#### SETUP VARS ####
+render_fps = 0.1
+description_opening = 'Hi, welcome to my YouTube Channel! <3'
+# don't forget to upload here --> ./upload-image-here/
 
 #### AUDIO #####
 
@@ -29,18 +31,32 @@ final_audio_clip.write_audiofile('./compiled/audio.mp3')
 #### DESCRIPTION #####
 # TODO keywords/tags
 
-# get timestamps
+# get timestamps + clip lengths
+audio_clip_lengths = [] # TODO use this later for dynamically changing image title and slider 
 unformatted_timestamps = [0]
 for i in range(1, len(playlist)): # note that (start, stop), stop is ommited
     t = round(clips[i].duration) + unformatted_timestamps[i-1]
-    if(t >= 3600): over_a_hour = True
+    
+    audio_clip_lengths.append(clips[i].duration)
     unformatted_timestamps.append(t)
 
 timestamps=[]
 # format timestamps properly - TODO: changes depeding on if it's over an hour or under
 for t in unformatted_timestamps: timestamps.append(str(datetime.timedelta(seconds=t)))
 
-# TODO description into to a file
+# formatting cleaning
+if(final_audio_clip.duration >= 3600): over_a_hour = True
+if(over_a_hour):
+    for i in range(len(timestamps)):
+        while timestamps[i].startswith(['0', ':']): timestamps[i] = timestamps[i][1:]
+
+my_file = open("./compiled", "w")
+
+my_file.write("")
+my_file.write("")
+my_file = open("")
+
+description = my_file.read()
 
 ## VIDEO ##
 
@@ -52,7 +68,7 @@ for t in unformatted_timestamps: timestamps.append(str(datetime.timedelta(second
 image = (ImageClip("./upload-image-here/image.jpg")
           .set_duration(final_audio_clip.duration)
           .set_pos(CENTER)
-          .set_fps(0.1))
+          .set_fps(render_fps))
 
 video = concatenate_videoclips([image], method='chain')
 video.audio = CompositeAudioClip([AudioFileClip("./compiled/audio.mp3")])
