@@ -1,14 +1,21 @@
 # NOTE this one is specifically for playlist compilations
-import random
-import os
+import random, os, datetime
 from tkinter import CENTER
 from moviepy.editor import *
-import datetime
 
-#### SETUP VARS ####
+#### var ####
 render_fps = 0.1
-description_opening = 'Hi, welcome to my YouTube Channel! <3'
-# don't forget to upload here --> ./upload-image-here/
+# TODO rendering options
+# image
+# dynamic image
+# looping video
+# looping slideshow
+
+# graphic/sfx options
+# audio visualizer
+# slow movement
+# particles
+# ambient noise loop
 
 #### AUDIO #####
 
@@ -44,47 +51,46 @@ timestamps=[]
 # format timestamps properly - TODO: changes depeding on if it's over an hour or under
 for t in unformatted_timestamps: timestamps.append(str(datetime.timedelta(seconds=t)))
 
-# formatting cleaning
-if(final_audio_clip.duration >= 3600): over_a_hour = True
-if(over_a_hour):
-    for i in range(len(timestamps)):
-        while timestamps[i].startswith(['0', ':']): timestamps[i] = timestamps[i][1:]
+# format under hour video timestamps
+under_hour = False
+if(final_audio_clip.duration < 3600): under_hour = True
+if(under_hour):
+    for i in range(len(timestamps)): timestamps[i] = timestamps[i][2:]
 
-my_file = open("./compiled", "w")
+# create description FIXME: description ending and opening not working
+with open("./compiled/description.txt", "w") as description:
 
-my_file.write("")
-my_file.write("")
-my_file = open("")
+        description_opening =''
+        description_ending = ''
 
-description = my_file.read()
+        with open('./edit_data_here/description_opening.txt') as f:
+            description_opening = f.read()
+
+        with open('./edit_data_here/description_ending.txt') as f:
+            description_opening = f.read()
+
+        description.write(description_opening + '\n\n')
+        description.write('TIMESTAMPS\n')
+        for i in range(len(timestamps)):
+            description.write(timestamps[i] + ' || ' + playlist[i][8:-4] + '\n')
+
+        description.write('\n\n' + description_ending)
 
 ## VIDEO ##
 
-## TODO: generate image version (no need to use pillow)
-## TODO: looped video version
-
-#https://zulko.github.io/moviepy/_modules/moviepy/video/compositing/CompositeVideoClip.html#:~:text=%5Bdocs%5Dclass%20CompositeVideoClip(VideoClip,width)%20of%20the%20final%20clip.
-## image version
-image = (ImageClip("./upload-image-here/image.jpg")
+# image version TODO: support more file types
+image = (ImageClip("./edit_data_here/image.jpg")
           .set_duration(final_audio_clip.duration)
           .set_pos(CENTER)
-          .set_fps(render_fps))
+          .set_fps(0.1))
 
 video = concatenate_videoclips([image], method='chain')
 video.audio = CompositeAudioClip([AudioFileClip("./compiled/audio.mp3")])
-video.write_videofile('./compiled/video.mp4',fps=0.1)
+video.write_videofile('./compiled/video.mp4',fps=render_fps)
 
-## TODO UPLOAD ##
-# title
-# description
-# timestamps
-# video
-# thumbnail
-
-## CLEANING ##
-# audio downloads
-# for filename in os.listdir('./audio'):
-#     f = os.path.join('./audio', filename)
-#     if os.path.isfile(f) and filename.endswith('.mp3'):
-#         # remove file
-#         os.remove(f)
+# CLEANING #
+for filename in os.listdir('./audio'):
+    f = os.path.join('./audio', filename)
+    if os.path.isfile(f) and filename.endswith('.mp3'):
+        # remove file
+        os.remove(f)
