@@ -9,7 +9,7 @@
 2. Run the following command:
 `youtube-dl -x --audio-format mp3 -o "./audio/%(title)s - %(uploader)s.%(ext)s" <PLAYLIST_LINK_HERE>`
 This command will download all the music from the playlist into `./audio` with the naming convention or `<title> - <author>.mp3`. Make sure the playlist you're choosing from is not private (so public or unlisted).
-3. Upload a image (currently .jpg only) into the `./edit_data_here/` dir. This will be the background for the duration of the video.
+3. Upload a image into the `./edit_data_here/` dir. This will be the background for the duration of the video. Update var `image_filename` in `./compile_video.py` to the name of your file. Don't forget the extension!
 4. Run `python compile_video.py` and wait for the video to compile. The compiled video will be located in `./compiled/video.mp4`.
 5. Upload the video to YouTube by using this command:
 `python upload_video.py --file="./compiled/video.mp4" --title="<YOUR_TITLE>" --description="<YOUR_DESCRIPTION>%" --keywords="<KEYWORD,KEYWORD>" --category="10" --privacyStatus="public"`
@@ -28,3 +28,4 @@ This command will download all the music from the playlist into `./audio` with t
 + detect if copyrighted (ignore copyrighted music -> note that you can also manually do this step by selectively choosing music)
 + better upload (title, description, timestamps, video, thumbnail)
 + better CLI, or interface
++ fix randomized playlist order -> render in order
