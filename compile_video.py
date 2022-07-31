@@ -3,8 +3,10 @@ import random, os, datetime
 from tkinter import CENTER
 from moviepy.editor import *
 
-#### var ####
+#### vars ####
 render_fps = 0.1
+image_filename = 'image.jpg'
+
 # TODO rendering options
 # image
 # dynamic image
@@ -42,7 +44,7 @@ final_audio_clip.write_audiofile('./compiled/audio.mp3')
 audio_clip_lengths = [] # TODO use this later for dynamically changing image title and slider 
 unformatted_timestamps = [0]
 for i in range(1, len(playlist)): # note that (start, stop), stop is ommited
-    t = round(clips[i].duration) + unformatted_timestamps[i-1]
+    t = round(int(clips[i-1].duration) + unformatted_timestamps[i-1])
     
     audio_clip_lengths.append(clips[i].duration)
     unformatted_timestamps.append(t)
@@ -78,8 +80,8 @@ with open("./compiled/description.txt", "w") as description:
 
 ## VIDEO ##
 
-# image version TODO: support more file types
-image = (ImageClip("./edit_data_here/image.jpg")
+# still image bg
+image = (ImageClip("./edit_data_here/" + image_filename)
           .set_duration(final_audio_clip.duration)
           .set_pos(CENTER)
           .set_fps(0.1))
@@ -87,10 +89,3 @@ image = (ImageClip("./edit_data_here/image.jpg")
 video = concatenate_videoclips([image], method='chain')
 video.audio = CompositeAudioClip([AudioFileClip("./compiled/audio.mp3")])
 video.write_videofile('./compiled/video.mp4',fps=render_fps)
-
-# CLEANING #
-for filename in os.listdir('./audio'):
-    f = os.path.join('./audio', filename)
-    if os.path.isfile(f) and filename.endswith('.mp3'):
-        # remove file
-        os.remove(f)
