@@ -1,5 +1,8 @@
 # Create A Automated Compiled Playlist Video
 
+I'm probably gonna start working on this again during the summer...
+
+
 #### NOTES
 + Only a JPG image is supported right now
 + use a youtube or yt music playlist
